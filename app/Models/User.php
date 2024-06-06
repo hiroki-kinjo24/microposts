@@ -123,6 +123,90 @@ class User extends Authenticatable
     
     public function loadRelationshipCounts()
     {
-        $this->loadCount(['microposts', 'followings', 'followers']);
+        $this->loadCount(['microposts', 'followings', 'followers', 'favoritings']);
+        //$this->loadCount(['microposts', 'followings', 'followers']);
+    }
+    
+    /**
+     * このユーザーとフォロー中ユーザーの投稿に絞り込む。
+     */
+    public function feed_microposts()
+    {
+        // このユーザーがフォロー中のユーザーのidを取得して配列にする
+        $userIds = $this->followings()->pluck('users.id')->toArray();
+        // このユーザーのidもその配列に追加
+        $userIds[] = $this->id;
+        // それらのユーザーが所有する投稿に絞り込む
+        return Micropost::whereIn('user_id', $userIds);
+    }
+    
+    /**
+     * このユーザーがお気に入り登録した投稿。（Userモデルとの関係を定義）
+     */
+    public function favoritings()
+    {
+        return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
+    }
+    
+    
+    /**
+     * この投稿をお気に入り登録したユーザー（Userモデルとの関係を定義）
+     */
+    /*
+    public function favoriters()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'micropost_id', 'user_id')->withTimestamps();
+    }
+    */
+    
+    /**
+     * $userIdで指定された投稿をお気に入り登録する。
+     *
+     * @param  int  $userId
+     * @return bool
+     */
+    public function favorite(int $contentId)
+    {
+        $exist = $this->is_favoriting($contentId);
+        //$its_me = $this->id == $contentId;
+        
+        //if ($exist || $its_me) {
+        if ($exist) {
+            return false;
+        } else {
+            $this->favoritings()->attach($contentId);
+            return true;
+        }
+    }
+    
+    /**
+     * $userIdで指定されたユーザーをアンフォローする。
+     * 
+     * @param  int $usereId
+     * @return bool
+     */
+    public function unfavorite(int $contentId)
+    {
+        $exist = $this->is_favoriting($contentId);
+        //$its_me = $this->id == $contentId;
+        
+        //if ($exist && !$its_me) {
+        if ($exist) {
+            $this->favoritings()->detach($contentId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * 指定された$contentIdの投稿をこのユーザーがお気に入り登録中であるか調べる。登録ならtrueを返す。
+     * 
+     * @param  int $userId
+     * @return bool
+     */
+    public function is_favoriting(int $contentId)
+    {
+        return $this->favoritings()->where('micropost_id', $contentId)->exists();
     }
 }

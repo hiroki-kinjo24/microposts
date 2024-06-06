@@ -4,6 +4,9 @@
         TimeLine
         <div class="badge badge-neutral ml-1">{{ $user->microposts_count }}</div>
     </a>
+    {{-- お気に入り投稿タブ --}}
+    
+    
     {{-- フォロー一覧タブ --}}
     <a href="{{ route('users.followings', $user->id) }}" class="tab grow {{ Request::routeIs('users.followings') ? 'tab-active' : '' }}">
         Followings

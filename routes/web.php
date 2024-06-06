@@ -7,6 +7,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MicropostsController;
 
 use App\Http\Controllers\UserFollowController;
+
+use App\Http\Controllers\FavoriteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +30,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('unfollow', [UserFollowController::class, 'destroy'])->name('user.unfollow');
         Route::get('followings', [UsersController::class, 'followings'])->name('users.followings');
         Route::get('followers', [UsersController::class, 'followers'])->name('users.followers');
+    });
+    
+    Route::prefix('users/{id}')->group(function () {
+        Route::post('favorite', [FavoriteController::class, 'store'])->name('favor.favorite');
+        Route::delete('unfavorite', [FavoriteController::class, 'destroy'])->name('favor.unfavorite');
+        Route::get('favoritings', [UsersController::class, 'favaritings'])->name('users.favoritings');
+        //Route::get('favoriters', [FavoriteController::class, 'followers'])->name('users.favoriters');
     });
     
     Route::resource('users', UsersController::class, ['only' => ['index', 'show']]);
