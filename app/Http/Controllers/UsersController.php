@@ -85,4 +85,61 @@ class UsersController extends Controller
             'users' => $followers,
         ]);
     }
+
+     public function favoritings($id)
+    {
+        // idの値でユーザーを検索して取得
+        $user = User::findOrFail($id);
+
+        // 関係するモデルの件数をロード
+        $user->loadRelationshipCounts();
+
+        // ユーザーのフォロー一覧を取得
+        $microposts = $user->favoritings()->paginate(10);
+
+        // フォロー一覧ビューでそれらを表示
+        return view('users.favoritings', [
+            'user' => $user,
+            'microposts' => $microposts
+        ]);
+        
+    }
+    
+    // getでtasks/id/editにアクセスされた場合の「更新画面表示処理」
+    public function edit($user)
+    {
+        //if ($user -> id == Auth::user()->id){
+        $user = Auth::user();
+        // メッセージ編集ビューでそれを表示
+        return view('users.useredit', ['user' => $user]);
+        
+    }
+    
+    // putまたはpatchでtasks/idにアクセスされた場合の「更新処理」
+    public function update(Request $request, $user)
+    {
+        /*
+        // バリデーション
+        $request->validate([
+            'name' => 'required',
+            'content' => 'required|max:255',
+        ]);
+        */
+        
+        // メッセージを更新
+        if ($request->name != NULL){
+            Auth::user()->name = $request->name;
+        }
+        if ($request->email != NULL){
+            Auth::user()->email = $request->email;
+        }
+        if ($request->password != NULL){
+            Auth::user()->password = $request->password;
+        }
+        
+        Auth::user()->save();
+
+        // トップページへリダイレクトさせる
+        return redirect('/');
+    }
 }

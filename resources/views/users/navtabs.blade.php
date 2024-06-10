@@ -1,12 +1,9 @@
-<div class="tabs tabs-lifted">
+<div class="tabs tabs-lifted ">
     {{-- ユーザー詳細タブ --}}
     <a href="{{ route('users.show', $user->id) }}" class="tab grow {{ Request::routeIs('users.show') ? 'tab-active' : '' }}">
         TimeLine
         <div class="badge badge-neutral ml-1">{{ $user->microposts_count }}</div>
     </a>
-    {{-- お気に入り投稿タブ --}}
-    
-    
     {{-- フォロー一覧タブ --}}
     <a href="{{ route('users.followings', $user->id) }}" class="tab grow {{ Request::routeIs('users.followings') ? 'tab-active' : '' }}">
         Followings
@@ -16,5 +13,10 @@
     <a href="{{ route('users.followers', $user->id) }}" class="tab grow {{ Request::routeIs('users.followers') ? 'tab-active' : '' }}">
         Followers
         <div class="badge badge-neutral ml-1">{{ $user->followers_count }}</div>
+    </a>
+    {{-- お気に入り投稿タブ --}}
+    <a href="{{ route('users.favoritings', $user->id) }}" class="tab grow {{ Request::routeIs('users.favortings') ? 'tab-active' : '' }}">
+        Favoritings
+        <div class="badge badge-neutral ml-1">{{ $user->favoritings_count }}</div>
     </a>
 </div>
