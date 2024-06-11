@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MicropostsController;
-
 use App\Http\Controllers\UserFollowController;
-
 use App\Http\Controllers\FavoriteController;
+
+use App\Http\Controllers\ImageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,7 +49,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     */
     
-     Route::resource('microposts', MicropostsController::class, ['only' => ['store', 'destroy']]);
+    Route::resource('microposts', MicropostsController::class, ['only' => ['store', 'destroy']]);
+     
+    Route::resource('image', ImageController::class);
+    //Route::get('index', [ImageController::class, 'index'])->name('image.index');
+    //Route::get('form', [ImageController::class, 'form'])->name('image.form');
+    Route::post('store', [ImageController::class, 'store'])->name('image.store');
 });
 
 require __DIR__.'/auth.php';

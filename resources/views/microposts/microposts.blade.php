@@ -6,7 +6,17 @@
                     {{-- 投稿の所有者のメールアドレスをもとにGravatarを取得して表示 --}}
                     <div class="avatar">
                         <div class="w-12 rounded">
-                            <img src="{{ Gravatar::get($micropost->user->email) }}" alt="" />
+                            {{-- 
+                            ユーザーのメールアドレスをもとにGravatarを取得して表示 
+                            <img src="{{ Gravatar::get($user->email, ['size' => 500]) }}" alt="">
+                            --}}
+                            
+                            {{--@if ($micropost->user_id->image != NULL) --}}
+                            @if ($micropost->user->image != NULL)
+                                <img src = "{{ Storage::url($micropost->user->image) }}">
+                            @else 
+                                <img src="{{ Gravatar::get($user->email, ['size' => 500]) }}" alt="">
+                            @endif
                         </div>
                     </div>
                     <div>

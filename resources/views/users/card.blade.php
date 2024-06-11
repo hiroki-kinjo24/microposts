@@ -3,8 +3,15 @@
         <h2 class="card-title">{{ $user->name }}</h2>
     </div>
     <figure>
-        {{-- ユーザーのメールアドレスをもとにGravatarを取得して表示 --}}
+        {{-- 
+        ユーザーのメールアドレスをもとにGravatarを取得して表示 
         <img src="{{ Gravatar::get($user->email, ['size' => 500]) }}" alt="">
+        --}}
+        @if ($user->image != NULL)
+            <img src = "{{ Storage::url($user->image) }}">
+        @else 
+            <img src="{{ Gravatar::get($user->email, ['size' => 500]) }}" alt="">
+        @endif
     </figure>
 </div>
 
