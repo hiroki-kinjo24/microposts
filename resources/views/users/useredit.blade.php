@@ -28,7 +28,8 @@
                         <label for="password" class="label">
                             <span class="label-text">パスワード:</span>
                         </label>
-                        <input type="text" name="password" value="{{ Auth::user()->password }}" class="input input-bordered w-full">
+                        {{-- <input type="text" name="password" value="{{ Auth::user()->password }}" class="input input-bordered w-full"> --}}
+                        <input type="text" name="password" value="" class="input input-bordered w-full">
                     </div>
                 <button type="submit" class="btn btn-primary btn-outline">変更</button>
             </form>
