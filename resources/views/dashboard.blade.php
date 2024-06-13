@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $switch = 0
+    @endphp
+
     @if (Auth::check())
         <div class="sm:grid sm:grid-cols-3 sm:gap-10">
             <aside class="mt-4">

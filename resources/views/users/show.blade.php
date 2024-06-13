@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $switch = 1
+    @endphp
     <div class="sm:grid sm:grid-cols-3 sm:gap-10">
         <aside class="mt-4">
             {{-- ユーザー情報 --}}

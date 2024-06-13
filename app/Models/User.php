@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasMany(Micropost::class);
     }
     
+    public function ads()
+    {
+        return $this->hasMany(Ad::class);
+    }
+    
     
     /**
      * このユーザーがフォロー中のユーザー。（Userモデルとの関係を定義）

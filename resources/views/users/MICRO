@@ -3,48 +3,46 @@
         <ul class="list-none">
             @php 
                 $key = 0;
+                $ads = DB::getSchemaBuilder()->getColumnListing('ads');
+                $ad_count = count($ads);
             @endphp
             @foreach ($microposts as $micropost)
-                @if ($switch == 0)
-                    @php $key = $key + 1 
+                @php $key = $key + 1 
+                @endphp
+                
+                @if ($key % 5 == 0)
+                    @php $key = 0 @endphp
+                    <p>広告</p>
+                    
+                    @php
+                        $ad = $ads[0];
                     @endphp
                     
-                    @if ($key % 5 == 0)
-                        @php 
-                            $key = 0;
-                        @endphp
-                        
-                        
-                        @php
-                            $ad = $ads[0];
-                        @endphp
-                        
-                        <li class="flex items-start gap-x-2 mb-4">
-                            {{-- 投稿の所有者のメールアドレスをもとにGravatarを取得して表示 --}}
-                            <div class="avatar">
-                                <div class="w-12 rounded">
-                                    @if ($ad->image != NULL)
-                                        <img src = "{{ Storage::url($ad->image) }}">
-                                    @else 
-                                        <img src="{{ Gravatar::get($user->email, ['size' => 500]) }}" alt="">
-                                    @endif
-                                </div>
+                    <li class="flex items-start gap-x-2 mb-4">
+                        {{-- 投稿の所有者のメールアドレスをもとにGravatarを取得して表示 --}}
+                        <div class="avatar">
+                            <div class="w-12 rounded">
+                                @if ($ads[0]->image != NULL)
+                                    <img src = "{{ Storage::url($ad->image) }}">
+                                @else 
+                                    <img src="{{ Gravatar::get($user->email, ['size' => 500]) }}" alt="">
+                                @endif
                             </div>
-                            <div>
-                                <div class = "flex　items-center">
-                                    {{-- 投稿の所有者のユーザー詳細ページへのリンク --}}
-                                    
-                                    <a class="link link-hover text-info" href="https://www.dac.co.jp/">{{ $ad->account }}</a>
-                                    <span class="text-muted text-xs text-gray-500">※広告</span>
-                                </div>
+                        </div>
+                        <div>
+                            <div class = "flex">
+                                {{-- 投稿の所有者のユーザー詳細ページへのリンク --}}
                                 
-                                <div>
-                                    {{-- 投稿内容 --}}
-                                    <p class="mb-0">{!! nl2br(e($ad->content)) !!}</p>
-                                </div>
+                                <a class="link link-hover text-info" href="https://www.dac.co.jp/">{{ $ad->account }}</a>
+                                <span class="text-muted text-gray-500">広告</span>
                             </div>
-                        </li>
-                    @endif
+                            
+                            <div>
+                                {{-- 投稿内容 --}}
+                                <p class="mb-0">{!! nl2br(e($ad->content)) !!}</p>
+                            </div>
+                        </div>
+                    </li>
                 @endif
                 
                 <li class="flex items-start gap-x-2 mb-4">
@@ -59,7 +57,7 @@
                         </div>
                     </div>
                     <div>
-                        <div class = "flex item-center">
+                        <div class = "flex">
                             {{-- 投稿の所有者のユーザー詳細ページへのリンク --}}
                             
                             <a class="link link-hover text-info" href="{{ route('users.show', $micropost->user->id) }}">{{ $micropost->user->name }}</a>
@@ -94,7 +92,7 @@
                                     @csrf
                                     @method('DELETE')
                                     
-                                    <button type="submit" class="btn btn-ghost btn-sm pt-0 normal-case" onclick="return confirm('Delete id = {{ $micropost->id }} ?')">
+                                    <button type="submit" class="btn btn-ghost btn-sm pt-5 normal-case" onclick="return confirm('Delete id = {{ $micropost->id }} ?')">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="" fill="red" class="h-6 w-6 inline">
                                             <path fill-rule="evenodd" d="M2.515 10.674a1.875 1.875 0 0 0 0 2.652L8.89 19.7c.352.351.829.549 1.326.549H19.5a3 3 0 0 0 3-3V6.75a3 3 0 0 0-3-3h-9.284c-.497 0-.974.198-1.326.55l-6.375 6.374ZM12.53 9.22a.75.75 0 1 0-1.06 1.06L13.19 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L15.31 12l1.72-1.72a.75.75 0 1 0-1.06-1.06l-1.72 1.72-1.72-1.72Z" clip-rule="evenodd" />
                                         </svg>
@@ -103,7 +101,7 @@
                             @endif
                         </div>
                         
-                        <div class= "item-start">
+                        <div>
                             {{-- 投稿内容 --}}
                             <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
                         </div>

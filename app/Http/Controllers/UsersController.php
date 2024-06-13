@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
+//require 'vendor/autoload.php';
+use App\Models\Ad;
+
+
 class UsersController extends Controller
 {
     public function index()
@@ -140,6 +144,47 @@ class UsersController extends Controller
         Auth::user()->save();
 
         // トップページへリダイレクトさせる
+        return redirect('/');
+    }
+    
+    // getでtasks/id/editにアクセスされた場合の「更新画面表示処理」
+    public function ad($user)
+    {
+        $user = Auth::user();
+        // メッセージ編集ビューでそれを表示
+        return view('users.ad', ['user' => $user]);
+        
+    }
+    
+    // putまたはpatchでtasks/idにアクセスされた場合の「更新処理」
+    public function addad(Request $request)
+    {
+        // バリデーション
+        
+        $request->validate([
+            'account' => 'required',
+            'content' => 'required',
+        ]);
+        
+        
+        
+        //画像の処理
+        $image = $request->file('image');//file()で受け取る
+        if($request->hasFile('image') && $image->isValid()){//画像があるないで条件分岐
+            $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
+        }
+        else{
+            return;
+        }
+    
+        // メッセージを作成
+        $ad = new Ad;
+        $ad->account = $request->account;
+        $ad->content = $request->content;
+        $ad->image = $request->file('image')->storeAs('public/strage/images',$image);
+        $ad->save();
+
+        //トップページへリダイレクトさせる
         return redirect('/');
     }
 }

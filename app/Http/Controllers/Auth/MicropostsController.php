@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Micropost;
-use App\Models\Ad;
 
 class MicropostsController extends Controller
 {
@@ -29,19 +28,10 @@ class MicropostsController extends Controller
                 'user' => $user,
                 'microposts' => $microposts,
             ];
-            
-            
         }
         
-        $ads = Ad::all(); // これはコレクションを返します
         // dashboardビューでそれらを表示
-        //return view('dashboard', $mergedArray);
-        // メッセージ一覧ビューでそれを表示
-        return view('dashboard', [
-            'ads' => $ads,
-            'user' => $user,
-            'microposts' => $microposts,
-        ]);                                 
+        return view('dashboard', $data);
     }
     
     public function store(Request $request)
