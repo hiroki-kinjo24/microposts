@@ -32,7 +32,7 @@ class ImageController extends Controller
         $user = \Auth::user();
         $user->image = $request->file('image')->storeAs('public/strage/images',$image);
         //$user->image = $request->file('image');
-        $useruse->save();
+        $user->save();
         
         //Image::create(['image' => $request->file('image')->storeAs('public/images',$image),]);
         //storage/app/public/images(imagesは作られる)に保存

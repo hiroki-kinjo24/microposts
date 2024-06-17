@@ -9,17 +9,21 @@
         <div class="justify-center">
             <form method="post" action="{{ route('image.store') }}" enctype="multipart/form-data" >
                 @csrf
-                
-                <div class="form-control my-4">
-                    <input type="file" name="image" accept="image/png, image/jpeg">
-                </div> 
-                <button type="submit" class="btn btn-primary normal-case">変更</button>
+                    <div class="form-control my-4">
+                        <input type="file" name="image" accept="image/png, image/jpeg">
+                    </div> 
+                    
+                    <button type="submit" class="btn btn-primary normal-case">変更</button>
              </form>
             
             
-            <form method="POST" action="{{ route('users.update', $user) }}" class="w-1/2">
+            <form method="POST" action="{{ route('users.update', $user) }}" enctype="multipart/form-data" class="w-1/2">
                 @csrf
                 @method('PUT')
+                    <div class="form-control my-4">
+                        <input type="file" name="image" accept="image/png, image/jpeg">
+                    </div> 
+                
                     <div class="form-control my-4">
                         <label for="name" class="label">
                             <span class="label-text">名前:</span>

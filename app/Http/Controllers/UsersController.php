@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Image;
+
 
 //require 'vendor/autoload.php';
 use App\Models\Ad;
@@ -129,6 +131,17 @@ class UsersController extends Controller
             'content' => 'required|max:255',
         ]);
         */
+        
+        //画像の処理
+        $image = $request->file('image');//file()で受け取る
+        if($request->hasFile('image') && $image->isValid()){//画像があるないで条件分岐
+            $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
+        }
+        else{
+            return redirect('/');
+        }
+        
+        Auth::user()->image = $request->file('image')->storeAs('public/strage/images',$image);
         
         // メッセージを更新
         if ($request->name != NULL){
