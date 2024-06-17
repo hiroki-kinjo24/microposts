@@ -30,18 +30,20 @@ class MicropostsController extends Controller
                 'microposts' => $microposts,
             ];
             
+            $ads = Ad::all(); // 広告の取得
+            
+            // dashboardビューでそれらを表示
+            //return view('dashboard', $mergedArray);
+            // メッセージ一覧ビューでそれを表示
+            return view('dashboard', [
+                'ads' => $ads,
+                'user' => $user,
+                'microposts' => $microposts,
+            ]); 
             
         }
         
-        $ads = Ad::all(); // これはコレクションを返します
-        // dashboardビューでそれらを表示
-        //return view('dashboard', $mergedArray);
-        // メッセージ一覧ビューでそれを表示
-        return view('dashboard', [
-            'ads' => $ads,
-            'user' => $user,
-            'microposts' => $microposts,
-        ]);                                 
+        return view('dashboard');
     }
     
     public function store(Request $request)

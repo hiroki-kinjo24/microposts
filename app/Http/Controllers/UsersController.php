@@ -99,7 +99,7 @@ class UsersController extends Controller
         $user->loadRelationshipCounts();
 
         // ユーザーのフォロー一覧を取得
-        $microposts = $user->favoritings()->paginate(10);
+        $microposts = $user->favoritings()->orderBy('created_at', 'desc')->paginate(10);
 
         // フォロー一覧ビューでそれらを表示
         return view('users.favoritings', [
