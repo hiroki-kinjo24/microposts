@@ -138,11 +138,13 @@ class UsersController extends Controller
             $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
         }
         else{
-            return redirect('/');
+            return;
         }
         
-        Auth::user()->image = $request->file('image')->storeAs('public/strage/images',$image);
         
+        if ($request->image != NULL){
+            Auth::user()->image = $request->file('image')->storeAs('public/strage/images',$image);
+        }
         // メッセージを更新
         if ($request->name != NULL){
             Auth::user()->name = $request->name;

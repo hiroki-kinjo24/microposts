@@ -2,21 +2,27 @@
     @if (isset($microposts))
         <ul class="list-none">
             @php 
-                $key = 0;
+                if ($switch == 0){
+                    $key = 0;
+                    $ad_count = count($ads);
+                    $ad_num = 0;
+                }
             @endphp
             @foreach ($microposts as $micropost)
                 @if ($switch == 0)
-                    @php $key = $key + 1 
+                    @php 
+                        $key = $key + 1 ;
                     @endphp
                     
                     @if ($key % 5 == 0)
                         @php 
                             $key = 0;
-                        @endphp
-                        
-                        
-                        @php
-                            $ad = $ads[0];
+                            if ($ad_num == $ad_count - 1){
+                                $ad_num = 0;
+                            }
+                            
+                            $ad = $ads[$ad_num];
+                            $ad_num = $ad_num + 1;
                         @endphp
                         
                         <li class="flex items-start gap-x-2 mb-4">
@@ -110,6 +116,14 @@
                             {{-- 投稿内容 --}}
                             <p class="mb-0">{!! nl2br(e($micropost->content)) !!}</p>
                         </div>
+                    
+                        @if ($micropost->postimage != NULL)
+                            <div class="">
+                                <img src = "{{ Storage::url($micropost->postimage) }}">
+                            </div>
+                        @else
+                            <p class="mb-0">URLは{{ $micropost->postimage }}だ</p>
+                        @endif
                     </div>
                 </li>
             @endforeach

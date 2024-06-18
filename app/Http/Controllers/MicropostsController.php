@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 
 use App\Models\Micropost;
+use App\Models\Image;
 use App\Models\Ad;
 
 class MicropostsController extends Controller
@@ -53,10 +53,27 @@ class MicropostsController extends Controller
             'content' => 'required|max:255',
         ]);
         
-        // 認証済みユーザー（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
-        $request->user()->microposts()->create([
-            'content' => $request->content,
-        ]);
+        $image = $request->file('image');//file()で受け取る
+        if($request->hasFile('image') && $image->isValid()){//画像があるないで条件分岐
+            $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
+            
+            // 認証済みユーザー（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
+            $request->user()->microposts()->create([
+                'content' => $request->content,
+                'postimage'=> $request->file('image')->storeAs('public/strage/images',$image)
+                //'postimage' => "postimage",
+            ]);
+            
+            //Image::create(['image' => $request->file('image')->storeAs('public/strage/images',$image),]);
+        }
+        else{
+            /*
+            // 認証済みユーザー（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
+            $request->user()->microposts()->create([
+                'content' => $request->content,
+            ]);
+            */
+        }
         
         // 前のURLへリダイレクトさせる
         return back();

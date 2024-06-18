@@ -9,7 +9,7 @@ class Micropost extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['content'];
+    protected $fillable = ['content', 'postimage'];
 
     /**
      * この投稿を所有するユーザー。（ Userモデルとの関係を定義）
