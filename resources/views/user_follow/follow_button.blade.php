@@ -1,7 +1,7 @@
 @if (Auth::id() != $user->id)
     @if (Auth::user()->is_following($user->id))
         {{-- アンフォローボタンのフォーム --}}
-        <div class="bg-green">
+        <div class="bg-green-300">
             <form method="POST" action="{{ route('user.unfollow', $user->id) }}">
                 @csrf
                 @method('DELETE')
@@ -15,7 +15,7 @@
             </form>
         </div>
     @else
-        <div class="bg-green-300">
+        <div class="bg-gray-800 text-white">
             {{-- フォローボタンのフォーム --}}
             <form method="POST" action="{{ route('user.follow', $user->id) }}">
                 @csrf

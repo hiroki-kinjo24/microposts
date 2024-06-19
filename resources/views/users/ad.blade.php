@@ -21,6 +21,13 @@
                     </label>
                     <input type="text" name="account" value="" class="input input-bordered w-full">
                 </div>
+                
+                <div class="form-control my-4">
+                    <label for="url" class="label">
+                        <span class="label-text">URL:</span>
+                    </label>
+                    <input type="text" name="url" value="" class="input input-bordered w-full">
+                </div>
             
                 <div class="form-control my-4">
                     <label for="content" class="label">
@@ -29,7 +36,7 @@
                     <input type="text" name="content" value="" class="input input-bordered w-full">
                 </div>
                 
-                <button type="submit" class="btn btn-primary normal-case">変更</button>
+                <button type="submit" class="btn btn-primary normal-case">追加</button>
             </form>
             
         </div>

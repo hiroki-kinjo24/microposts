@@ -13,6 +13,7 @@ class Ad extends Model
         'account',
         'content',
         'image',
+        'url'
     ];
     
     public function user()

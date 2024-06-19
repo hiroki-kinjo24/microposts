@@ -72,3 +72,5 @@ RUN rsync -ar /var/www/html/public-npm/ /var/www/html/public/ \
     && chown -R www-data:www-data /var/www/html/public
 
 EXPOSE 8080
+
+RUN php artisan storage:link

@@ -67,12 +67,10 @@ class MicropostsController extends Controller
             //Image::create(['image' => $request->file('image')->storeAs('public/strage/images',$image),]);
         }
         else{
-            /*
             // 認証済みユーザー（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
             $request->user()->microposts()->create([
                 'content' => $request->content,
             ]);
-            */
         }
         
         // 前のURLへリダイレクトさせる

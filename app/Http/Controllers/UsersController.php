@@ -136,15 +136,9 @@ class UsersController extends Controller
         $image = $request->file('image');//file()で受け取る
         if($request->hasFile('image') && $image->isValid()){//画像があるないで条件分岐
             $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
-        }
-        else{
-            return;
-        }
-        
-        
-        if ($request->image != NULL){
             Auth::user()->image = $request->file('image')->storeAs('public/strage/images',$image);
         }
+        
         // メッセージを更新
         if ($request->name != NULL){
             Auth::user()->name = $request->name;
@@ -179,6 +173,7 @@ class UsersController extends Controller
         $request->validate([
             'account' => 'required',
             'content' => 'required',
+            'url' => 'required',
         ]);
         
         
@@ -197,6 +192,7 @@ class UsersController extends Controller
         $ad->account = $request->account;
         $ad->content = $request->content;
         $ad->image = $request->file('image')->storeAs('public/strage/images',$image);
+        $ad->url = $request -> url;
         $ad->save();
 
         //トップページへリダイレクトさせる

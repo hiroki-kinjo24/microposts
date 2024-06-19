@@ -47,6 +47,7 @@ class AdController extends Controller
         $ad->account = $request->account;
         $ad->content = $request->content;
         $ad->image = $request->file('image')->storeAs('public/strage/images',$image);
+        $ad->url = $request -> url;
         $ad->save();
         
         // ユーザー一覧をidの降順で取得

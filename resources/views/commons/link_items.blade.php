@@ -3,8 +3,6 @@
     <li><a class="link link-hover" href="{{ route('users.index') }}">Users</a></li>
     {{-- ユーザー詳細ページへのリンク --}}
     <li><a class="link link-hover" href="{{ route('users.show', Auth::user()->id) }}">{{ Auth::user()->name }}&#39;s profile</a></li>
-    {{-- ユーザー詳細ページへのリンク --}}
-    <li><a class="link link-hover" href="{{ route('users.favoritings', Auth::user()->id) }}">favorite</a></li>
     @if (Auth::user()->id == 2)
         {{-- 広告追加のページへのリンク --}}
         <li><a class="link link-hover" href="{{ route('users.ad', Auth::user())}}">ad</a></li>

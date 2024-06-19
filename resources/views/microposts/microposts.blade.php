@@ -3,21 +3,17 @@
         <ul class="list-none">
             @php 
                 if ($switch == 0){
-                    $key = 0;
+                    $key = 1;
                     $ad_count = count($ads);
                     $ad_num = 0;
                 }
             @endphp
             @foreach ($microposts as $micropost)
                 @if ($switch == 0)
-                    @php 
-                        $key = $key + 1 ;
-                    @endphp
-                    
                     @if ($key % 5 == 0)
                         @php 
-                            $key = 0;
-                            if ($ad_num == $ad_count - 1){
+                            $key = 1;
+                            if ($ad_num == $ad_count){
                                 $ad_num = 0;
                             }
                             
@@ -40,7 +36,7 @@
                                 <div class = "flex　items-center">
                                     {{-- 投稿の所有者のユーザー詳細ページへのリンク --}}
                                     
-                                    <a class="link link-hover text-info" href="https://www.dac.co.jp/">{{ $ad->account }}</a>
+                                    <a class="link link-hover text-info" href="{{ $ad->url }}">{{ $ad->account }}</a>
                                     <span class="text-muted text-xs text-gray-500">※広告</span>
                                 </div>
                                 
@@ -51,6 +47,10 @@
                             </div>
                         </li>
                     @endif
+                    
+                    @php 
+                        $key = $key + 1;
+                    @endphp
                 @endif
                 
                 <li class="flex items-start gap-x-2 mb-4">
@@ -121,8 +121,6 @@
                             <div class="">
                                 <img src = "{{ Storage::url($micropost->postimage) }}">
                             </div>
-                        @else
-                            <p class="mb-0">URLは{{ $micropost->postimage }}だ</p>
                         @endif
                     </div>
                 </li>
