@@ -119,7 +119,7 @@
                     
                         @if ($micropost->postimage != NULL)
                             <div class="">
-                                <img src = "{{ Storage::url($micropost->postimage) }}">
+                                <img src = "{{ Storage::url($micropost->postimage) }}" class="w-20 h-20">
                             </div>
                         @endif
                     </div>
