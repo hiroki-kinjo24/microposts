@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Image;
+
+
+//require 'vendor/autoload.php';
+use App\Models\Ad;
+
 
 class UsersController extends Controller
 {
@@ -20,6 +26,15 @@ class UsersController extends Controller
         ]);
     }
     
+    public function search(Request $request){
+        $results = User::where('name', 'LIKE', '%' . $request->word . '%')->get();
+        
+        // ユーザー一覧ビューでそれを表示
+        return view('users.index', [
+            'users' => $results
+        ]);
+    }
+    
     public function show($id)
     {
         // idの値でユーザーを検索して取得
@@ -30,6 +45,7 @@ class UsersController extends Controller
         
         // ユーザーの投稿一覧を作成日時の降順で取得
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
+        $microposts->loadCount(['favoriters']);
 
         // ユーザー詳細ビューでそれを表示
         return view('users.show', [
@@ -95,8 +111,9 @@ class UsersController extends Controller
         $user->loadRelationshipCounts();
 
         // ユーザーのフォロー一覧を取得
-        $microposts = $user->favoritings()->paginate(10);
-
+        $microposts = $user->favoritings()->orderBy('created_at', 'desc')->paginate(10);
+        $microposts->loadCount(['favoriters']);
+        
         // フォロー一覧ビューでそれらを表示
         return view('users.favoritings', [
             'user' => $user,
@@ -104,6 +121,25 @@ class UsersController extends Controller
         ]);
         
     }
+    /*
+    public function followers($id)
+    {
+        // idの値でユーザーを検索して取得
+        $micropost = MIcroposts::findOrFail($id);
+
+        // 関係するモデルの件数をロード
+        $micropost->loadRelationshipCounts();
+
+        // ユーザーのフォロワー一覧を取得
+        $favoriters = $micropost->followers()->paginate(10);
+
+        // フォロワー一覧ビューでそれらを表示
+        return view('users.followers', [
+            'user' => $user,
+            'users' => $followers,
+        ]);
+    }
+    */
     
     // getでtasks/id/editにアクセスされた場合の「更新画面表示処理」
     public function edit($user)
@@ -126,6 +162,13 @@ class UsersController extends Controller
         ]);
         */
         
+        //画像の処理
+        $image = $request->file('image');//file()で受け取る
+        if($request->hasFile('image') && $image->isValid()){//画像があるないで条件分岐
+            $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
+            Auth::user()->image = $request->file('image')->storeAs('public/strage/images',$image);
+        }
+        
         // メッセージを更新
         if ($request->name != NULL){
             Auth::user()->name = $request->name;
@@ -140,6 +183,49 @@ class UsersController extends Controller
         Auth::user()->save();
 
         // トップページへリダイレクトさせる
+        return redirect('/');
+    }
+    
+    // getでtasks/id/editにアクセスされた場合の「更新画面表示処理」
+    public function ad($user)
+    {
+        $user = Auth::user();
+        // メッセージ編集ビューでそれを表示
+        return view('users.ad', ['user' => $user]);
+        
+    }
+    
+    // putまたはpatchでtasks/idにアクセスされた場合の「更新処理」
+    public function addad(Request $request)
+    {
+        // バリデーション
+        
+        $request->validate([
+            'account' => 'required',
+            'content' => 'required',
+            'url' => 'required',
+        ]);
+        
+        
+        
+        //画像の処理
+        $image = $request->file('image');//file()で受け取る
+        if($request->hasFile('image') && $image->isValid()){//画像があるないで条件分岐
+            $image = $image->getClientOriginalName();//storeAsで指定する画像名を作成
+        }
+        else{
+            return;
+        }
+    
+        // メッセージを作成
+        $ad = new Ad;
+        $ad->account = $request->account;
+        $ad->content = $request->content;
+        $ad->image = $request->file('image')->storeAs('public/strage/images',$image);
+        $ad->url = $request -> url;
+        $ad->save();
+
+        //トップページへリダイレクトさせる
         return redirect('/');
     }
 }

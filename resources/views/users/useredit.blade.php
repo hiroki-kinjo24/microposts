@@ -6,10 +6,14 @@
             <h2 class="text-lg">id: {{ Auth::user()->id }} のユーザー情報編集ページ</h2>
         </div>
     
-        <div class="flex justify-center">
-            <form method="POST" action="{{ route('users.update', $user) }}" class="w-1/2">
+        <div class="justify-center">
+            <form method="POST" action="{{ route('users.update', $user) }}" enctype="multipart/form-data" class="w-1/2">
                 @csrf
                 @method('PUT')
+                    <div class="form-control my-4">
+                        <input type="file" name="image" accept="image/png, image/jpeg">
+                    </div> 
+                
                     <div class="form-control my-4">
                         <label for="name" class="label">
                             <span class="label-text">名前:</span>
@@ -31,7 +35,8 @@
                         {{-- <input type="text" name="password" value="{{ Auth::user()->password }}" class="input input-bordered w-full"> --}}
                         <input type="text" name="password" value="" class="input input-bordered w-full">
                     </div>
-                <button type="submit" class="btn btn-primary btn-outline">変更</button>
+                {{-- <button type="submit" class="btn btn-primary btn-outline">変更</button>  btn btn-error btn-sm normal-case--}}
+                <button type="submit" class="btn btn-primary normal-case">変更</button>
             </form>
             
         </div>

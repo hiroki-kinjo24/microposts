@@ -1,15 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $switch = 0
+    @endphp
+
     @if (Auth::check())
         <div class="sm:grid sm:grid-cols-3 sm:gap-10">
             <aside class="mt-4">
                 {{-- ユーザー情報 --}}
                 @include('users.card')
-            </aside>
-            <div class="sm:col-span-2">
                 {{-- 投稿フォーム --}}
                 @include('microposts.form')
+            </aside>
+            <div class="sm:col-span-2">
                 {{-- 投稿一覧 --}}
                 @include('microposts.microposts')
             </div>
@@ -20,7 +24,7 @@
                 <div class="max-w-md mb-10">
                     <h2>Welcome to the Microposts</h2>
                     {{-- ユーザー登録ページへのリンク --}}
-                    <a class="btn btn-primary btn-lg normal-case" href="{{ route('register') }}">Sign up now!</a>
+                    <a class="btn btn-primary btn-lg normal-case" href="{{ route('login') }}">Login now!</a>
                 </div>
             </div>
         </div>

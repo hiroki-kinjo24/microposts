@@ -1,14 +1,14 @@
 <?php
 
-//use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MicropostsController;
-
 use App\Http\Controllers\UserFollowController;
-
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\AdController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,16 +31,25 @@ Route::middleware('auth')->group(function () {
         Route::get('followings', [UsersController::class, 'followings'])->name('users.followings');
         Route::get('followers', [UsersController::class, 'followers'])->name('users.followers');
         Route::post('edit', [UsersController::class, 'edit'])->name('users.edit');
+        Route::get('ad', [AdController::class, 'ad'])->name('users.ad');
+        Route::post('addad', [AdController::class, 'addad'])->name('users.addad');
         Route::put('update', [UsersController::class, 'update'])->name('users.update');
+        Route::get('click', [AdController::class, 'click'])->name('ads.click');
+        
     });
     
     Route::prefix('users/{id}')->group(function () {
         Route::post('favorite', [FavoriteController::class, 'store'])->name('favor.favorite');
         Route::delete('unfavorite', [FavoriteController::class, 'destroy'])->name('favor.unfavorite');
         Route::get('favoritings', [UsersController::class, 'favoritings'])->name('users.favoritings');
+        
         //Route::get('favoriters', [FavoriteController::class, 'followers'])->name('users.favoriters');
+        
+        //Route::post('addad', [AdController::class, 'addad'])->name('ad.addad');
     });
     
+    Route::post('search', [UsersController::class, 'search'])->name('users.search');
+    //Route::get('click', [AdController::class, 'click'])->name('ads.click');
     Route::resource('users', UsersController::class, ['only' => ['index', 'show']]);
     
     /*
@@ -49,7 +58,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     */
     
-     Route::resource('microposts', MicropostsController::class, ['only' => ['store', 'destroy']]);
+    Route::resource('microposts', MicropostsController::class, ['only' => ['store', 'destroy']]);
+     
+    Route::resource('image', ImageController::class);
+    Route::post('store', [ImageController::class, 'store'])->name('image.store');
+    //Route::resource('ad', AdController::class);s
+    
 });
 
 require __DIR__.'/auth.php';

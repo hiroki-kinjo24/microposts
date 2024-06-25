@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasMany(Micropost::class);
     }
     
+    public function ads()
+    {
+        return $this->hasMany(Ad::class);
+    }
+    
     
     /**
      * このユーザーがフォロー中のユーザー。（Userモデルとの関係を定義）
@@ -148,16 +153,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Micropost::class, 'favorites', 'user_id', 'micropost_id')->withTimestamps();
     }
     
-    
-    /**
-     * この投稿をお気に入り登録したユーザー（Userモデルとの関係を定義）
-     */
-    /*
-    public function favoriters()
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'micropost_id', 'user_id')->withTimestamps();
-    }
-    */
     
     /**
      * $userIdで指定された投稿をお気に入り登録する。
