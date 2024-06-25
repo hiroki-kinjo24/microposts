@@ -34,17 +34,22 @@ Route::middleware('auth')->group(function () {
         Route::get('ad', [AdController::class, 'ad'])->name('users.ad');
         Route::post('addad', [AdController::class, 'addad'])->name('users.addad');
         Route::put('update', [UsersController::class, 'update'])->name('users.update');
+        Route::get('click', [AdController::class, 'click'])->name('ads.click');
+        
     });
     
     Route::prefix('users/{id}')->group(function () {
         Route::post('favorite', [FavoriteController::class, 'store'])->name('favor.favorite');
         Route::delete('unfavorite', [FavoriteController::class, 'destroy'])->name('favor.unfavorite');
         Route::get('favoritings', [UsersController::class, 'favoritings'])->name('users.favoritings');
+        
         //Route::get('favoriters', [FavoriteController::class, 'followers'])->name('users.favoriters');
         
         //Route::post('addad', [AdController::class, 'addad'])->name('ad.addad');
     });
     
+    Route::post('search', [UsersController::class, 'search'])->name('users.search');
+    //Route::get('click', [AdController::class, 'click'])->name('ads.click');
     Route::resource('users', UsersController::class, ['only' => ['index', 'show']]);
     
     /*

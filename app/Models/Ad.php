@@ -13,7 +13,9 @@ class Ad extends Model
         'account',
         'content',
         'image',
-        'url'
+        'url',
+        'imp',
+        'click'
     ];
     
     public function user()

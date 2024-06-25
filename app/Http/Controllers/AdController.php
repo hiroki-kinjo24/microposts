@@ -62,4 +62,13 @@ class AdController extends Controller
     {
         // メソッドの内容
     }
+    
+    public function click($id)
+    {
+        $ad = Ad::findOrFail($id);
+        $ad->click =  $ad->click + 1;
+        $ad->save();
+        
+        return redirect()->away($ad->url);
+    }
 }

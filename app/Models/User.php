@@ -155,16 +155,6 @@ class User extends Authenticatable
     
     
     /**
-     * この投稿をお気に入り登録したユーザー（Userモデルとの関係を定義）
-     */
-    /*
-    public function favoriters()
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'micropost_id', 'user_id')->withTimestamps();
-    }
-    */
-    
-    /**
      * $userIdで指定された投稿をお気に入り登録する。
      *
      * @param  int  $userId

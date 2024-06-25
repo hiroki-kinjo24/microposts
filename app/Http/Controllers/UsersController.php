@@ -26,6 +26,15 @@ class UsersController extends Controller
         ]);
     }
     
+    public function search(Request $request){
+        $results = User::where('name', 'LIKE', '%' . $request->word . '%')->get();
+        
+        // ユーザー一覧ビューでそれを表示
+        return view('users.index', [
+            'users' => $results
+        ]);
+    }
+    
     public function show($id)
     {
         // idの値でユーザーを検索して取得
@@ -36,6 +45,7 @@ class UsersController extends Controller
         
         // ユーザーの投稿一覧を作成日時の降順で取得
         $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
+        $microposts->loadCount(['favoriters']);
 
         // ユーザー詳細ビューでそれを表示
         return view('users.show', [
@@ -102,7 +112,8 @@ class UsersController extends Controller
 
         // ユーザーのフォロー一覧を取得
         $microposts = $user->favoritings()->orderBy('created_at', 'desc')->paginate(10);
-
+        $microposts->loadCount(['favoriters']);
+        
         // フォロー一覧ビューでそれらを表示
         return view('users.favoritings', [
             'user' => $user,
@@ -110,6 +121,25 @@ class UsersController extends Controller
         ]);
         
     }
+    /*
+    public function followers($id)
+    {
+        // idの値でユーザーを検索して取得
+        $micropost = MIcroposts::findOrFail($id);
+
+        // 関係するモデルの件数をロード
+        $micropost->loadRelationshipCounts();
+
+        // ユーザーのフォロワー一覧を取得
+        $favoriters = $micropost->followers()->paginate(10);
+
+        // フォロワー一覧ビューでそれらを表示
+        return view('users.followers', [
+            'user' => $user,
+            'users' => $followers,
+        ]);
+    }
+    */
     
     // getでtasks/id/editにアクセスされた場合の「更新画面表示処理」
     public function edit($user)
