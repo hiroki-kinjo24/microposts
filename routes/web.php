@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('microposts', MicropostsController::class, ['only' => ['store', 'destroy']]);
      
-    Route::resource('image', ImageController::class);
+    //Route::resource('image', ImageController::class);
     Route::post('store', [ImageController::class, 'store'])->name('image.store');
     //Route::resource('ad', AdController::class);s
     
